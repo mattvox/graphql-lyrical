@@ -6,6 +6,8 @@
     no-unused-expressions: ["error", { "allowShortCircuit": true }],
     function-paren-newline: ["error", "consistent"],
     react/jsx-filename-extension: [1, { "extensions": [".js", ".jsx"] }],
-    react/prop-types: [0, { customValidators: skipUndeclared }]
+    react/prop-types: [0, { customValidators: skipUndeclared }],
+    jsx-a11y/label-has-for: [0, "never"],
+    jsx-a11y/anchor-is-valid: [0, "never"]
   }
 }
