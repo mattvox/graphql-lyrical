@@ -1,20 +1,26 @@
 import React from 'react'
 import { graphql } from 'react-apollo'
+import { Link } from 'react-router'
 
 import fetchSong from '../queries/fetchSong'
 
-const SongDetail = ({ data: { song, loading } }) => {
-  return (
+import AddLyrics from './AddLyrics'
+import LyricList from './LyricList'
+
+const SongDetail = ({ data: { song, loading }, params }) => {
+  const renderSong = () => (
     <div>
-      <h3>
-        Song Detail
-      </h3>
-      {
-        loading
-        ? <div>loading...</div>
-        : <div>{song.title}</div>
-      }
+      <Link to='/'>Back to Home</Link>
+      <h3>{song.title}</h3>
+      <LyricList lyrics={song.lyrics} />
+      <AddLyrics songId={params.id} />
     </div>
+  )
+
+  return (
+    loading
+      ? <div>loading...</div>
+      : renderSong()
   )
 }
 

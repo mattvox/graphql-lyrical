@@ -14,7 +14,9 @@ const SongList = ({ data: { songs, loading, refetch }, mutate }) => {
   const renderSongs = () => (
     songs.map(({ id, title }) => (
       <li key={id} className='collection-item'>
-        {title}
+        <Link to={`/songs/${id}`}>
+          {title}
+        </Link>
         <i
           className='material-icons'
           onClick={() => onSongDelete(id)}
@@ -29,8 +31,8 @@ const SongList = ({ data: { songs, loading, refetch }, mutate }) => {
     <div>
       {
         loading
-        ? <div>loading...</div>
-        : <ul className='collection'>{renderSongs()}</ul>
+          ? <div>loading...</div>
+          : <ul className='collection'>{renderSongs()}</ul>
       }
       <Link
         to='/songs/new'
