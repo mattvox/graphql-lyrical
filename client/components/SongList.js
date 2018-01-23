@@ -3,11 +3,24 @@ import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import { Link } from 'react-router'
 
-const SongList = ({ data: { songs, loading } }) => {
+import fetchSongs from '../queries/fetchSongs'
+
+const SongList = ({ data: { songs, loading, refetch }, mutate }) => {
+  const onSongDelete = id => (
+    mutate({ variables: { id } })
+      .then(() => refetch())
+  )
+
   const renderSongs = () => (
-    songs.map(song => (
-      <li key={song.id} className='collection-item'>
-        {song.title}
+    songs.map(({ id, title }) => (
+      <li key={id} className='collection-item'>
+        {title}
+        <i
+          className='material-icons'
+          onClick={() => onSongDelete(id)}
+        >
+          delete
+        </i>
       </li>
     ))
   )
@@ -30,13 +43,15 @@ const SongList = ({ data: { songs, loading } }) => {
   )
 }
 
-const query = gql`
-  {
-    songs {
+const mutation = gql`
+  mutation DeleteSong($id: ID) {
+    deleteSong(id: $id) {
       id
-      title
     }
   }
 `
 
-export default graphql(query)(SongList)
+
+export default graphql(mutation)(
+  graphql(fetchSongs)(SongList),
+)
