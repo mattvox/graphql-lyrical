@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import { Link, hashHistory } from 'react-router'
 
 import query from '../queries/fetchSongs'
+import addSong from '../mutations/addSong'
 
 class CreateSong extends Component {
   constructor(props) {
@@ -49,13 +49,4 @@ class CreateSong extends Component {
   }
 }
 
-const mutation = gql`
-  mutation AddSong($title: String) {
-    addSong(title: $title) {
-      id
-      title
-    }
-  }
-`
-
-export default graphql(mutation)(CreateSong)
+export default graphql(addSong)(CreateSong)

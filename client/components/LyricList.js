@@ -1,23 +1,45 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { graphql } from 'react-apollo'
 
-class LyricList extends Component {
-  renderLyrics() {
-    return this.props.lyrics.map(({ id, content }) => {
-      return (
-        <li key={id} className='collection-item'>
-          {content}
-        </li>
-      )
+import likeLyric from '../mutations/likeLyric'
+
+const LyricList = (props) => {
+  const onLike = (id, likes) => (
+    props.mutate({
+      variables: { id },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        likeLyric: {
+          id,
+          __typename: 'LyricLike',
+          likes: likes + 1,
+        },
+      },
     })
-  }
+  )
 
-  render() {
-    return (
-      <ul className='collection'>
-        {this.renderLyrics()}
-      </ul>
-    )
-  }
+  const renderLyrics = () => (
+    props.lyrics.map(({ id, content, likes }) => (
+      <li key={id} className='collection-item'>
+        {content}
+        <div className='vote-box'>
+          <i
+            className='material-icons'
+            onClick={() => onLike(id, likes)}
+          >
+            thumb_up
+          </i>
+          {likes}
+        </div>
+      </li>
+    ))
+  )
+
+  return (
+    <ul className='collection'>
+      {renderLyrics()}
+    </ul>
+  )
 }
 
-export default LyricList
+export default graphql(likeLyric)(LyricList)

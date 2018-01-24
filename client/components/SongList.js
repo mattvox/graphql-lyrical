@@ -1,9 +1,9 @@
 import React from 'react'
-import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import { Link } from 'react-router'
 
 import fetchSongs from '../queries/fetchSongs'
+import deleteSong from '../mutations/deleteSong'
 
 const SongList = ({ data: { songs, loading, refetch }, mutate }) => {
   const onSongDelete = id => (
@@ -45,15 +45,6 @@ const SongList = ({ data: { songs, loading, refetch }, mutate }) => {
   )
 }
 
-const mutation = gql`
-  mutation DeleteSong($id: ID) {
-    deleteSong(id: $id) {
-      id
-    }
-  }
-`
-
-
-export default graphql(mutation)(
+export default graphql(deleteSong)(
   graphql(fetchSongs)(SongList),
 )
